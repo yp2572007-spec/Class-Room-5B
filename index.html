@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Live Timetable</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-panel {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        #clock {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        #current-day {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #87ceeb;
+        }
+
+        #current-lecture {
+            font-size: 1.1em;
+            color: #90ee90;
+            margin: 15px 0;
+        }
+
+        #timer {
+            font-size: 2em;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .lecture-status {
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+
+        .timetable-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .day-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .day-name {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 5px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.5);
+            padding-bottom: 10px;
+        }
+
+        .room-info {
+            font-size: 0.95em;
+            color: #87ceeb;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .class-row {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .class-row:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-left-color: #764ba2;
+        }
+
+        .class-row.active {
+            background: rgba(76, 175, 80, 0.3);
+            border: 2px solid #4caf50;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+        }
+
+        .time-slot {
+            font-size: 0.9em;
+            color: #87ceeb;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .subject-name {
+            font-size: 1.05em;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .subject-name.regular {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .subject-name.lab {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .instructor {
+            font-size: 0.85em;
+            color: #ddd;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+        .break {
+            background: rgba(255, 165, 0, 0.2);
+            border-left-color: #ffa500;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .timetable-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #clock {
+                font-size: 1.8em;
+            }
+
+            #timer {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 College Live Timetable</h1>
+
+        <div class="info-panel">
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">📅 Today</div>
+                    <div id="current-day">Loading...</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">🕐 Current Time</div>
+                    <div id="clock">--:--:--</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">🏫 Location</div>
+                    <div style="font-size: 1.2em;">Building A, Room 205</div>
+                </div>
+            </div>
+
+            <div id="current-lecture" class="lecture-status">Checking current lecture...</div>
+            <div id="timer">No active lecture</div>
+        </div>
+
+        <div class="timetable-grid" id="timetable">
+            <!-- Will be populated by JavaScript -->
+        </div>
+
+        <div class="footer">
+            <p>⏰ Last updated: <span id="last-update">Just now</span></p>
+            <p>💡 Active lectures are highlighted in green</p>
+        </div>
+    </div>
+
+    <script>
+        // Timetable Data
+        const timetable = {
+            Monday: [
+                { time: "09:00-10:00", subject: "Data Structures", instructor: "Prof. Smith", type: "regular" },
+                { time: "10:00-11:00", subject: "Web Development", instructor: "Prof. Johnson", type: "regular" },
+                { time: "11:00-12:00", subject: "BREAK", type: "break" },
+                { time: "12:00-13:00", subject: "Database Design", instructor: "Prof. Williams", type: "regular" },
+                { time: "13:00-14:30", subject: "Advanced Java Lab", instructor: "Prof. Brown", type: "lab" }
+            ],
+            Tuesday: [
+                { time: "09:00-10:00", subject: "Operating Systems", instructor: "Prof. Davis", type: "regular" },
+                { time: "10:00-11:30", subject: "Web Dev Lab", instructor: "Prof. Miller", type: "lab" },
+                { time: "11:30-12:00", subject: "BREAK", type: "break" },
+                { time: "12:00-13:00", subject: "Algorithms", instructor: "Prof. Wilson", type: "regular" }
+            ],
+            Wednesday: [
+                { time: "09:00-10:00", subject: "Compiler Design", instructor: "Prof. Moore", type: "regular" },
+                { time: "10:00-11:00", subject: "Cloud Computing", instructor: "Prof. Taylor", type: "regular" },
+                { time: "11:00-12:00", subject: "BREAK", type: "break" },
+                { time: "12:00-13:30", subject: "Python Programming Lab", instructor: "Prof. Anderson", type: "lab" },
+                { time: "13:30-14:30", subject: "Cybersecurity", instructor: "Prof. Thomas", type: "regular" }
+            ],
+            Thursday: [
+                { time: "09:00-10:00", subject: "Machine Learning", instructor: "Prof. Jackson", type: "regular" },
+                { time: "10:00-11:30", subject: "ML Lab", instructor: "Prof. White", type: "lab" },
+                { time: "11:30-12:00", subject: "BREAK", type: "break" },
+                { time: "12:00-13:00", subject: "Software Engineering", instructor: "Prof. Harris", type: "regular" }
+            ],
+            Friday: [
+                { time: "09:00-10:00", subject: "Mobile App Development", instructor: "Prof. Martin", type: "regular" },
+                { time: "10:00-11:00", subject: "Network Programming", instructor: "Prof. Thompson", type: "regular" },
+                { time: "11:00-12:00", subject: "BREAK", type: "break" },
+                { time: "12:00-13:00", subject: "Project Seminar", instructor: "Prof. Garcia", type: "regular" }
+            ],
+            Saturday: [
+                { time: "09:00-10:00", subject: "Artificial Intelligence", instructor: "Prof. Martinez", type: "regular" },
+                { time: "10:00-11:30", subject: "AI Lab", instructor: "Prof. Robinson", type: "lab" },
+                { time: "11:30-12:00", subject: "BREAK", type: "break" },
+                { time: "12:00-13:00", subject: "Revision Session", instructor: "Prof. Clark", type: "regular" }
+            ]
+        };
+
+        // Initialize Timetable
+        function initTimetable() {
+            const container = document.getElementById("timetable");
+            const days = Object.keys(timetable);
+
+            days.forEach(day => {
+                const dayCard = document.createElement("div");
+                dayCard.className = "day-card";
+                dayCard.innerHTML = `
+                    <div class="day-name">📅 ${day}</div>
+                    <div class="room-info">🏫 Room 205</div>
+                    <div id="classes-${day}"></div>
+                `;
+                container.appendChild(dayCard);
+
+                const classesContainer = document.getElementById(`classes-${day}`);
+                timetable[day].forEach((cls, index) => {
+                    const classRow = document.createElement("div");
+                    classRow.className = `class-row ${cls.type === 'break' ? 'break' : ''}`;
+                    classRow.setAttribute("data-day", day);
+                    classRow.setAttribute("data-time", cls.time);
+                    classRow.setAttribute("data-subject", cls.subject);
+
+                    if (cls.type !== 'break') {
+                        const [start, end] = cls.time.split('-');
+                        classRow.setAttribute("data-start", start);
+                        classRow.setAttribute("data-end", end);
+                    }
+
+                    classRow.innerHTML = `
+                        <div class="time-slot">⏰ ${cls.time}</div>
+                        <div class="subject-name ${cls.type}">
+                            ${cls.type === 'break' ? '☕ ' : (cls.type === 'lab' ? '🖥️ ' : '📖 ')} ${cls.subject}
+                        </div>
+                        ${cls.type !== 'break' ? `<div class="instructor">👨‍🏫 ${cls.instructor}</div>` : ''}
+                    `;
+                    classesContainer.appendChild(classRow);
+                });
+            });
+        }
+
+        // Update Live Clock and Current Lecture
+        function updateLiveInfo() {
+            const now = new Date();
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const today = days[now.getDay()];
+
+            // Update Clock
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
+            document.getElementById("current-day").textContent = today;
+            document.getElementById("last-update").textContent = "Just now";
+
+            // Check for active lecture
+            let foundActive = false;
+            const classRows = document.querySelectorAll(".class-row");
+
+            classRows.forEach(row => {
+                row.classList.remove("active");
+
+                const day = row.getAttribute("data-day");
+                const start = row.getAttribute("data-start");
+                const end = row.getAttribute("data-end");
+                const subject = row.getAttribute("data-subject");
+
+                if (start && end && day === today) {
+                    const [startH, startM] = start.split(":");
+                    const [endH, endM] = end.split(":");
+
+                    const startTime = new Date();
+                    startTime.setHours(parseInt(startH), parseInt(startM), 0);
+
+                    const endTime = new Date();
+                    endTime.setHours(parseInt(endH), parseInt(endM), 0);
+
+                    if (now >= startTime && now <= endTime) {
+                        foundActive = true;
+                        row.classList.add("active");
+
+                        const timeLeft = endTime - now;
+                        const minutesLeft = Math.floor(timeLeft / 1000 / 60);
+                        const secondsLeft = Math.floor((timeLeft / 1000) % 60);
+
+                        document.getElementById("current-lecture").innerHTML = 
+                            `📚 <strong>Current Lecture:</strong> ${subject}`;
+                        document.getElementById("timer").textContent = 
+                            `⏳ Ends in: ${minutesLeft}m ${secondsLeft}s`;
+                    }
+                }
+            });
+
+            if (!foundActive) {
+                document.getElementById("current-lecture").textContent = "✅ No lecture running now";
+                document.getElementById("timer").textContent = "📭 Break time or end of day";
+            }
+        }
+
+        // Initialize
+        initTimetable();
+        updateLiveInfo();
+
+        // Update every second
+        setInterval(updateLiveInfo, 1000);
+    </script>
+</body>
+</html>
