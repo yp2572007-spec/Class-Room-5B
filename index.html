@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>College Live Timetable</title>
+    <title>BCA 5-B Live Timetable</title>
     <style>
         * {
             margin: 0;
@@ -13,127 +13,158 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
-            padding: 30px 20px;
+            padding: 20px;
             min-height: 100vh;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        h1 {
+        .header {
             text-align: center;
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .college-info {
+            font-size: 0.95em;
+            color: #87ceeb;
+            margin-bottom: 5px;
         }
 
         .info-panel {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
-            text-align: center;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
 
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
         }
 
         .info-item {
             background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .info-label {
-            font-size: 0.9em;
+            font-size: 0.85em;
             opacity: 0.8;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         #clock {
-            font-size: 2.2em;
+            font-size: 1.8em;
             font-weight: bold;
             color: #ffd700;
         }
 
         #current-day {
-            font-size: 1.3em;
+            font-size: 1.1em;
             font-weight: 600;
             color: #87ceeb;
         }
 
-        #current-lecture {
-            font-size: 1.1em;
-            color: #90ee90;
-            margin: 15px 0;
+        .class-info {
+            background: rgba(76, 175, 80, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #4caf50;
+            margin-top: 10px;
         }
 
-        #timer {
-            font-size: 2em;
+        .class-info.empty {
+            background: rgba(255, 165, 0, 0.2);
+            border-left-color: #ffa500;
+        }
+
+        .current-subject {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #90ee90;
+            margin-bottom: 8px;
+        }
+
+        .class-info.empty .current-subject {
+            color: #ffb347;
+        }
+
+        .time-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 0.95em;
+        }
+
+        .time-info div {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .duration {
+            font-size: 1.3em;
             color: #ff6b6b;
             font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
         }
 
-        .lecture-status {
-            font-size: 0.95em;
-            opacity: 0.9;
-        }
-
-        .timetable-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .day-card {
+        .timetable {
             background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(10px);
-            border-radius: 18px;
-            padding: 20px;
+            border-radius: 15px;
+            overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            margin-bottom: 25px;
         }
 
-        .day-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        .day-section {
+            margin-bottom: 0;
         }
 
-        .day-name {
-            font-size: 1.6em;
+        .day-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px;
+            font-size: 1.3em;
             font-weight: bold;
             color: #ffd700;
-            margin-bottom: 5px;
-            border-bottom: 2px solid rgba(255, 215, 0, 0.5);
-            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        .room-info {
-            font-size: 0.95em;
-            color: #87ceeb;
-            margin-bottom: 15px;
-            opacity: 0.9;
+        .classes-container {
+            padding: 10px;
         }
 
         .class-row {
-            background: rgba(255, 255, 255, 0.08);
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 15px;
             padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 12px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
             border-left: 4px solid #667eea;
             transition: all 0.3s ease;
             cursor: pointer;
@@ -141,86 +172,98 @@
 
         .class-row:hover {
             background: rgba(255, 255, 255, 0.15);
-            border-left-color: #764ba2;
+            transform: translateX(5px);
         }
 
         .class-row.active {
             background: rgba(76, 175, 80, 0.3);
-            border: 2px solid #4caf50;
+            border-left: 4px solid #4caf50;
             box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
         }
 
+        .class-row.lab {
+            border-left-color: #f5576c;
+        }
+
+        .class-row.lab.active {
+            background: rgba(245, 87, 108, 0.3);
+            border-left-color: #f5576c;
+            box-shadow: 0 0 15px rgba(245, 87, 108, 0.5);
+        }
+
         .time-slot {
-            font-size: 0.9em;
-            color: #87ceeb;
             font-weight: 600;
-            margin-bottom: 5px;
+            color: #87ceeb;
+            text-align: center;
+            font-size: 0.95em;
+        }
+
+        .subject-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .subject-name {
-            font-size: 1.05em;
+            font-size: 1.1em;
             font-weight: bold;
-            padding: 8px 12px;
-            border-radius: 8px;
-            display: inline-block;
-            margin-top: 5px;
+            color: white;
+            margin-bottom: 3px;
         }
 
-        .subject-name.regular {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .class-row.lab .subject-name {
+            color: #ffb3ba;
         }
 
-        .subject-name.lab {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-
-        .instructor {
-            font-size: 0.85em;
+        .subject-type {
+            font-size: 0.8em;
             color: #ddd;
-            margin-top: 5px;
             opacity: 0.8;
         }
 
-        .break {
-            background: rgba(255, 165, 0, 0.2);
-            border-left-color: #ffa500;
-            font-style: italic;
-            text-align: center;
+        .empty-slot {
+            opacity: 0.5;
         }
 
         .footer {
             text-align: center;
-            padding: 20px;
-            color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            color: rgba(255, 255, 255, 0.6);
             font-size: 0.9em;
         }
 
         @media (max-width: 768px) {
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .timetable-grid {
-                grid-template-columns: 1fr;
+            .header h1 {
+                font-size: 1.6em;
             }
 
             .info-grid {
                 grid-template-columns: 1fr;
             }
 
-            #clock {
-                font-size: 1.8em;
+            .class-row {
+                grid-template-columns: 100px 1fr;
+                gap: 10px;
+                padding: 10px;
             }
 
-            #timer {
-                font-size: 1.5em;
+            .time-slot {
+                font-size: 0.85em;
+            }
+
+            .subject-name {
+                font-size: 0.95em;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎓 College Live Timetable</h1>
+        <div class="header">
+            <h1>📘 BCA 5-B Live Timetable</h1>
+            <div class="college-info">S K Patel Institute of Management & Computer Studies</div>
+            <div class="college-info">🏫 Classroom: 5-B CR-16</div>
+        </div>
 
         <div class="info-panel">
             <div class="info-grid">
@@ -233,65 +276,64 @@
                     <div id="clock">--:--:--</div>
                 </div>
                 <div class="info-item">
-                    <div class="info-label">🏫 Location</div>
-                    <div style="font-size: 1.2em;">Building A, Room 205</div>
+                    <div class="info-label">📍 Semester</div>
+                    <div style="font-size: 1.1em;">BCA SEM 5</div>
                 </div>
             </div>
 
-            <div id="current-lecture" class="lecture-status">Checking current lecture...</div>
-            <div id="timer">No active lecture</div>
+            <div class="class-info empty" id="classInfo">
+                <div class="current-subject">✅ No lecture running now</div>
+                <div class="time-info">
+                    <div><span style="opacity: 0.7;">Current Class:</span> <strong>--</strong></div>
+                    <div><span style="opacity: 0.7;">Duration:</span> <strong>--</strong></div>
+                </div>
+            </div>
         </div>
 
-        <div class="timetable-grid" id="timetable">
+        <div class="timetable" id="timetable">
             <!-- Will be populated by JavaScript -->
         </div>
 
         <div class="footer">
-            <p>⏰ Last updated: <span id="last-update">Just now</span></p>
-            <p>💡 Active lectures are highlighted in green</p>
+            <p>⏰ Active lectures are highlighted in green | Labs highlighted in red</p>
+            <p>Last updated: <span id="last-update">Just now</span></p>
         </div>
     </div>
 
     <script>
-        // Timetable Data
+        // BCA 5-B Timetable Data from the image
         const timetable = {
             Monday: [
-                { time: "09:00-10:00", subject: "Data Structures", instructor: "Prof. Smith", type: "regular" },
-                { time: "10:00-11:00", subject: "Web Development", instructor: "Prof. Johnson", type: "regular" },
-                { time: "11:00-12:00", subject: "BREAK", type: "break" },
-                { time: "12:00-13:00", subject: "Database Design", instructor: "Prof. Williams", type: "regular" },
-                { time: "13:00-14:30", subject: "Advanced Java Lab", instructor: "Prof. Brown", type: "lab" }
+                { time: "09:00-10:00", subject: "ST(ND)", type: "regular" },
+                { time: "10:00-11:00", subject: "NGD(DP)", type: "regular" },
+                { time: "12:00-01:00", subject: "ERP(KS)", type: "regular" },
+                { time: "01:00-02:00", subject: "CYS(JDP)", type: "regular" }
             ],
             Tuesday: [
-                { time: "09:00-10:00", subject: "Operating Systems", instructor: "Prof. Davis", type: "regular" },
-                { time: "10:00-11:30", subject: "Web Dev Lab", instructor: "Prof. Miller", type: "lab" },
-                { time: "11:30-12:00", subject: "BREAK", type: "break" },
-                { time: "12:00-13:00", subject: "Algorithms", instructor: "Prof. Wilson", type: "regular" }
+                { time: "09:00-11:00", subject: "JAVA(ND)-B LAB-3", type: "lab" },
+                { time: "11:00-12:00", subject: "CYS(JDP)", type: "regular" },
+                { time: "12:00-01:00", subject: "ERP(KS)", type: "regular" }
             ],
             Wednesday: [
-                { time: "09:00-10:00", subject: "Compiler Design", instructor: "Prof. Moore", type: "regular" },
-                { time: "10:00-11:00", subject: "Cloud Computing", instructor: "Prof. Taylor", type: "regular" },
-                { time: "11:00-12:00", subject: "BREAK", type: "break" },
-                { time: "12:00-13:30", subject: "Python Programming Lab", instructor: "Prof. Anderson", type: "lab" },
-                { time: "13:30-14:30", subject: "Cybersecurity", instructor: "Prof. Thomas", type: "regular" }
+                { time: "09:00-10:00", subject: "ERP(KS)", type: "regular" },
+                { time: "10:00-11:00", subject: "JAVA(ND)", type: "regular" },
+                { time: "12:00-01:00", subject: "NGD(DP)", type: "regular" },
+                { time: "01:00-02:00", subject: "CYS(JDP)", type: "regular" }
             ],
             Thursday: [
-                { time: "09:00-10:00", subject: "Machine Learning", instructor: "Prof. Jackson", type: "regular" },
-                { time: "10:00-11:30", subject: "ML Lab", instructor: "Prof. White", type: "lab" },
-                { time: "11:30-12:00", subject: "BREAK", type: "break" },
-                { time: "12:00-13:00", subject: "Software Engineering", instructor: "Prof. Harris", type: "regular" }
+                { time: "09:00-11:00", subject: "JAVA(ND)-B LAB-3", type: "lab" },
+                { time: "12:00-01:00", subject: "ERP(KS)", type: "regular" },
+                { time: "01:00-02:00", subject: "ST(ND)", type: "regular" }
             ],
             Friday: [
-                { time: "09:00-10:00", subject: "Mobile App Development", instructor: "Prof. Martin", type: "regular" },
-                { time: "10:00-11:00", subject: "Network Programming", instructor: "Prof. Thompson", type: "regular" },
-                { time: "11:00-12:00", subject: "BREAK", type: "break" },
-                { time: "12:00-13:00", subject: "Project Seminar", instructor: "Prof. Garcia", type: "regular" }
+                { time: "09:00-10:00", subject: "ST(ND)", type: "regular" },
+                { time: "10:00-11:00", subject: "CYS(JDP)", type: "regular" },
+                { time: "11:00-01:00", subject: "NGD(DP)-B LAB-3", type: "lab" }
             ],
             Saturday: [
-                { time: "09:00-10:00", subject: "Artificial Intelligence", instructor: "Prof. Martinez", type: "regular" },
-                { time: "10:00-11:30", subject: "AI Lab", instructor: "Prof. Robinson", type: "lab" },
-                { time: "11:30-12:00", subject: "BREAK", type: "break" },
-                { time: "12:00-13:00", subject: "Revision Session", instructor: "Prof. Clark", type: "regular" }
+                { time: "09:00-10:00", subject: "JAVA(ND)", type: "regular" },
+                { time: "10:00-12:00", subject: "NGD(DP)-B LAB-3", type: "lab" },
+                { time: "12:00-01:00", subject: "ST(ND)", type: "regular" }
             ]
         };
 
@@ -301,35 +343,34 @@
             const days = Object.keys(timetable);
 
             days.forEach(day => {
-                const dayCard = document.createElement("div");
-                dayCard.className = "day-card";
-                dayCard.innerHTML = `
-                    <div class="day-name">📅 ${day}</div>
-                    <div class="room-info">🏫 Room 205</div>
-                    <div id="classes-${day}"></div>
+                const daySection = document.createElement("div");
+                daySection.className = "day-section";
+                daySection.innerHTML = `
+                    <div class="day-header">📅 ${day.toUpperCase()}</div>
+                    <div class="classes-container" id="classes-${day}"></div>
                 `;
-                container.appendChild(dayCard);
+                container.appendChild(daySection);
 
                 const classesContainer = document.getElementById(`classes-${day}`);
-                timetable[day].forEach((cls, index) => {
+                timetable[day].forEach((cls) => {
                     const classRow = document.createElement("div");
-                    classRow.className = `class-row ${cls.type === 'break' ? 'break' : ''}`;
+                    classRow.className = `class-row ${cls.type === 'lab' ? 'lab' : ''}`;
                     classRow.setAttribute("data-day", day);
                     classRow.setAttribute("data-time", cls.time);
                     classRow.setAttribute("data-subject", cls.subject);
 
-                    if (cls.type !== 'break') {
-                        const [start, end] = cls.time.split('-');
-                        classRow.setAttribute("data-start", start);
-                        classRow.setAttribute("data-end", end);
-                    }
+                    const [start, end] = cls.time.split('-');
+                    classRow.setAttribute("data-start", start);
+                    classRow.setAttribute("data-end", end);
+
+                    const typeLabel = cls.type === 'lab' ? '🖥️ LAB' : '📖 Theory';
 
                     classRow.innerHTML = `
-                        <div class="time-slot">⏰ ${cls.time}</div>
-                        <div class="subject-name ${cls.type}">
-                            ${cls.type === 'break' ? '☕ ' : (cls.type === 'lab' ? '🖥️ ' : '📖 ')} ${cls.subject}
+                        <div class="time-slot">${cls.time}</div>
+                        <div class="subject-info">
+                            <div class="subject-name">${cls.subject}</div>
+                            <div class="subject-type">${typeLabel}</div>
                         </div>
-                        ${cls.type !== 'break' ? `<div class="instructor">👨‍🏫 ${cls.instructor}</div>` : ''}
                     `;
                     classesContainer.appendChild(classRow);
                 });
@@ -362,7 +403,7 @@
                 const end = row.getAttribute("data-end");
                 const subject = row.getAttribute("data-subject");
 
-                if (start && end && day === today) {
+                if (day === today) {
                     const [startH, startM] = start.split(":");
                     const [endH, endM] = end.split(":");
 
@@ -372,25 +413,51 @@
                     const endTime = new Date();
                     endTime.setHours(parseInt(endH), parseInt(endM), 0);
 
-                    if (now >= startTime && now <= endTime) {
+                    // Handle cases where end time is next day (e.g., 01:00 means 13:00)
+                    if (endH < startH) {
+                        endTime.setDate(endTime.getDate() + 1);
+                    }
+
+                    if (now >= startTime && now < endTime) {
                         foundActive = true;
                         row.classList.add("active");
 
                         const timeLeft = endTime - now;
-                        const minutesLeft = Math.floor(timeLeft / 1000 / 60);
+                        const hoursLeft = Math.floor(timeLeft / 1000 / 3600);
+                        const minutesLeft = Math.floor((timeLeft / 1000 / 60) % 60);
                         const secondsLeft = Math.floor((timeLeft / 1000) % 60);
 
-                        document.getElementById("current-lecture").innerHTML = 
-                            `📚 <strong>Current Lecture:</strong> ${subject}`;
-                        document.getElementById("timer").textContent = 
-                            `⏳ Ends in: ${minutesLeft}m ${secondsLeft}s`;
+                        let durationText = "";
+                        if (hoursLeft > 0) {
+                            durationText = `${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`;
+                        } else {
+                            durationText = `${minutesLeft}m ${secondsLeft}s`;
+                        }
+
+                        const classInfo = document.getElementById("classInfo");
+                        classInfo.className = "class-info";
+                        classInfo.innerHTML = `
+                            <div class="current-subject">📚 ${subject}</div>
+                            <div class="time-info">
+                                <div><span style="opacity: 0.7;">Time:</span> <strong>${start} - ${end}</strong></div>
+                                <div><span style="opacity: 0.7;">Duration:</span> <strong>${durationText}</strong></div>
+                            </div>
+                            <div class="duration">⏳ Class ends in: ${durationText}</div>
+                        `;
                     }
                 }
             });
 
             if (!foundActive) {
-                document.getElementById("current-lecture").textContent = "✅ No lecture running now";
-                document.getElementById("timer").textContent = "📭 Break time or end of day";
+                const classInfo = document.getElementById("classInfo");
+                classInfo.className = "class-info empty";
+                classInfo.innerHTML = `
+                    <div class="current-subject">✅ No lecture running now</div>
+                    <div class="time-info">
+                        <div><span style="opacity: 0.7;">Current Class:</span> <strong>--</strong></div>
+                        <div><span style="opacity: 0.7;">Duration:</span> <strong>--</strong></div>
+                    </div>
+                `;
             }
         }
 
