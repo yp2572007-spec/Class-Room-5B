@@ -130,6 +130,46 @@
             margin-top: 10px;
         }
 
+        /* Tabs Styles */
+        .tabs-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border: 2px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Timetable Styles */
         .timetable {
             background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(10px);
@@ -141,7 +181,11 @@
         }
 
         .day-section {
-            margin-bottom: 0;
+            display: none;
+        }
+
+        .day-section.active {
+            display: block;
         }
 
         .day-header {
@@ -154,20 +198,21 @@
         }
 
         .classes-container {
-            padding: 10px;
+            padding: 15px;
         }
 
         .class-row {
             display: grid;
-            grid-template-columns: 120px 1fr;
+            grid-template-columns: 120px 1fr 100px;
             gap: 15px;
-            padding: 12px;
-            margin-bottom: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 10px;
             border-left: 4px solid #667eea;
             transition: all 0.3s ease;
             cursor: pointer;
+            align-items: center;
         }
 
         .class-row:hover {
@@ -221,8 +266,26 @@
             opacity: 0.8;
         }
 
-        .empty-slot {
-            opacity: 0.5;
+        .duration-badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            text-align: center;
+            font-weight: 600;
+            color: #87ceeb;
+        }
+
+        .class-row.active .duration-badge {
+            background: rgba(76, 175, 80, 0.3);
+            color: #90ee90;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1em;
         }
 
         .footer {
@@ -242,9 +305,9 @@
             }
 
             .class-row {
-                grid-template-columns: 100px 1fr;
+                grid-template-columns: 1fr;
                 gap: 10px;
-                padding: 10px;
+                padding: 12px;
             }
 
             .time-slot {
@@ -253,6 +316,15 @@
 
             .subject-name {
                 font-size: 0.95em;
+            }
+
+            .tabs-container {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 0.85em;
             }
         }
     </style>
@@ -290,12 +362,19 @@
             </div>
         </div>
 
+        <!-- Tabs for Days -->
+        <div class="tabs-container" id="tabsContainer">
+            <!-- Will be populated by JavaScript -->
+        </div>
+
+        <!-- Timetable Content -->
         <div class="timetable" id="timetable">
             <!-- Will be populated by JavaScript -->
         </div>
 
         <div class="footer">
             <p>⏰ Active lectures are highlighted in green | Labs highlighted in red</p>
+            <p>📱 Click on days to switch between timetables</p>
             <p>Last updated: <span id="last-update">Just now</span></p>
         </div>
     </div>
@@ -306,36 +385,76 @@
             Monday: [
                 { time: "09:00-10:00", subject: "ST(ND)", type: "regular" },
                 { time: "10:00-11:00", subject: "NGD(DP)", type: "regular" },
-                { time: "12:00-01:00", subject: "ERP(KS)", type: "regular" },
-                { time: "01:00-02:00", subject: "CYS(JDP)", type: "regular" }
+                { time: "11:00-12:00", subject: "BREAK", type: "break" },
+                { time: "12:00-13:00", subject: "ERP(KS)", type: "regular" },
+                { time: "13:00-14:00", subject: "CYS(JDP)", type: "regular" }
             ],
             Tuesday: [
                 { time: "09:00-11:00", subject: "JAVA(ND)-B LAB-3", type: "lab" },
-                { time: "11:00-12:00", subject: "CYS(JDP)", type: "regular" },
-                { time: "12:00-01:00", subject: "ERP(KS)", type: "regular" }
+                { time: "11:00-12:00", subject: "BREAK", type: "break" },
+                { time: "12:00-13:00", subject: "CYS(JDP)", type: "regular" },
+                { time: "13:00-14:00", subject: "ERP(KS)", type: "regular" }
             ],
             Wednesday: [
                 { time: "09:00-10:00", subject: "ERP(KS)", type: "regular" },
                 { time: "10:00-11:00", subject: "JAVA(ND)", type: "regular" },
-                { time: "12:00-01:00", subject: "NGD(DP)", type: "regular" },
-                { time: "01:00-02:00", subject: "CYS(JDP)", type: "regular" }
+                { time: "11:00-12:00", subject: "BREAK", type: "break" },
+                { time: "12:00-13:00", subject: "NGD(DP)", type: "regular" },
+                { time: "13:00-14:00", subject: "CYS(JDP)", type: "regular" }
             ],
             Thursday: [
                 { time: "09:00-11:00", subject: "JAVA(ND)-B LAB-3", type: "lab" },
-                { time: "12:00-01:00", subject: "ERP(KS)", type: "regular" },
-                { time: "01:00-02:00", subject: "ST(ND)", type: "regular" }
+                { time: "11:00-12:00", subject: "BREAK", type: "break" },
+                { time: "12:00-13:00", subject: "ERP(KS)", type: "regular" },
+                { time: "13:00-14:00", subject: "ST(ND)", type: "regular" }
             ],
             Friday: [
                 { time: "09:00-10:00", subject: "ST(ND)", type: "regular" },
                 { time: "10:00-11:00", subject: "CYS(JDP)", type: "regular" },
-                { time: "11:00-01:00", subject: "NGD(DP)-B LAB-3", type: "lab" }
+                { time: "11:00-13:00", subject: "NGD(DP)-B LAB-3", type: "lab" }
             ],
             Saturday: [
                 { time: "09:00-10:00", subject: "JAVA(ND)", type: "regular" },
                 { time: "10:00-12:00", subject: "NGD(DP)-B LAB-3", type: "lab" },
-                { time: "12:00-01:00", subject: "ST(ND)", type: "regular" }
+                { time: "12:00-13:00", subject: "BREAK", type: "break" },
+                { time: "13:00-14:00", subject: "ST(ND)", type: "regular" }
             ]
         };
+
+        let currentTab = "Monday";
+
+        // Initialize Tabs
+        function initTabs() {
+            const tabsContainer = document.getElementById("tabsContainer");
+            const days = Object.keys(timetable);
+
+            days.forEach(day => {
+                const btn = document.createElement("button");
+                btn.className = `tab-btn ${day === "Monday" ? "active" : ""}`;
+                btn.textContent = `📅 ${day}`;
+                btn.onclick = () => switchTab(day);
+                tabsContainer.appendChild(btn);
+            });
+        }
+
+        // Switch Tab
+        function switchTab(day) {
+            currentTab = day;
+            
+            // Update active tab button
+            document.querySelectorAll(".tab-btn").forEach(btn => {
+                btn.classList.remove("active");
+            });
+            event.target.classList.add("active");
+
+            // Update active timetable section
+            document.querySelectorAll(".day-section").forEach(section => {
+                section.classList.remove("active");
+            });
+            document.getElementById(`section-${day}`).classList.add("active");
+
+            updateLiveInfo();
+        }
 
         // Initialize Timetable
         function initTimetable() {
@@ -344,36 +463,59 @@
 
             days.forEach(day => {
                 const daySection = document.createElement("div");
-                daySection.className = "day-section";
+                daySection.className = `day-section ${day === "Monday" ? "active" : ""}`;
+                daySection.id = `section-${day}`;
                 daySection.innerHTML = `
-                    <div class="day-header">📅 ${day.toUpperCase()}</div>
+                    <div class="day-header">📅 ${day.toUpperCase()} - BCA 5-B</div>
                     <div class="classes-container" id="classes-${day}"></div>
                 `;
                 container.appendChild(daySection);
 
                 const classesContainer = document.getElementById(`classes-${day}`);
-                timetable[day].forEach((cls) => {
-                    const classRow = document.createElement("div");
-                    classRow.className = `class-row ${cls.type === 'lab' ? 'lab' : ''}`;
-                    classRow.setAttribute("data-day", day);
-                    classRow.setAttribute("data-time", cls.time);
-                    classRow.setAttribute("data-subject", cls.subject);
+                
+                if (timetable[day].length === 0) {
+                    classesContainer.innerHTML = '<div class="empty-message">No classes scheduled</div>';
+                } else {
+                    timetable[day].forEach((cls) => {
+                        const classRow = document.createElement("div");
+                        
+                        if (cls.type === "break") {
+                            classRow.className = "class-row";
+                            classRow.style.borderLeftColor = "#ffa500";
+                            classRow.innerHTML = `
+                                <div class="time-slot">${cls.time}</div>
+                                <div class="subject-info">
+                                    <div class="subject-name" style="color: #ffb347;">☕ ${cls.subject}</div>
+                                </div>
+                                <div class="duration-badge">Break</div>
+                            `;
+                        } else {
+                            classRow.className = `class-row ${cls.type === 'lab' ? 'lab' : ''}`;
+                            classRow.setAttribute("data-day", day);
+                            classRow.setAttribute("data-time", cls.time);
+                            classRow.setAttribute("data-subject", cls.subject);
 
-                    const [start, end] = cls.time.split('-');
-                    classRow.setAttribute("data-start", start);
-                    classRow.setAttribute("data-end", end);
+                            const [start, end] = cls.time.split('-');
+                            classRow.setAttribute("data-start", start);
+                            classRow.setAttribute("data-end", end);
 
-                    const typeLabel = cls.type === 'lab' ? '🖥️ LAB' : '📖 Theory';
+                            const typeLabel = cls.type === 'lab' ? '🖥️ LAB' : '📖 Theory';
+                            const durationMinutes = (parseInt(end.split(':')[0]) - parseInt(start.split(':')[0])) * 60 + 
+                                                   (parseInt(end.split(':')[1]) - parseInt(start.split(':')[1]));
 
-                    classRow.innerHTML = `
-                        <div class="time-slot">${cls.time}</div>
-                        <div class="subject-info">
-                            <div class="subject-name">${cls.subject}</div>
-                            <div class="subject-type">${typeLabel}</div>
-                        </div>
-                    `;
-                    classesContainer.appendChild(classRow);
-                });
+                            classRow.innerHTML = `
+                                <div class="time-slot">${cls.time}</div>
+                                <div class="subject-info">
+                                    <div class="subject-name">${cls.subject}</div>
+                                    <div class="subject-type">${typeLabel}</div>
+                                </div>
+                                <div class="duration-badge">${durationMinutes}m</div>
+                            `;
+                        }
+                        
+                        classesContainer.appendChild(classRow);
+                    });
+                }
             });
         }
 
@@ -391,7 +533,7 @@
             document.getElementById("current-day").textContent = today;
             document.getElementById("last-update").textContent = "Just now";
 
-            // Check for active lecture
+            // Check for active lecture (only if viewing today's timetable)
             let foundActive = false;
             const classRows = document.querySelectorAll(".class-row");
 
@@ -403,7 +545,7 @@
                 const end = row.getAttribute("data-end");
                 const subject = row.getAttribute("data-subject");
 
-                if (day === today) {
+                if (day === today && start && end) {
                     const [startH, startM] = start.split(":");
                     const [endH, endM] = end.split(":");
 
@@ -412,11 +554,6 @@
 
                     const endTime = new Date();
                     endTime.setHours(parseInt(endH), parseInt(endM), 0);
-
-                    // Handle cases where end time is next day (e.g., 01:00 means 13:00)
-                    if (endH < startH) {
-                        endTime.setDate(endTime.getDate() + 1);
-                    }
 
                     if (now >= startTime && now < endTime) {
                         foundActive = true;
@@ -448,7 +585,7 @@
                 }
             });
 
-            if (!foundActive) {
+            if (!foundActive || currentTab !== today) {
                 const classInfo = document.getElementById("classInfo");
                 classInfo.className = "class-info empty";
                 classInfo.innerHTML = `
@@ -462,6 +599,7 @@
         }
 
         // Initialize
+        initTabs();
         initTimetable();
         updateLiveInfo();
 
