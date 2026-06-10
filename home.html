@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCA 5-B - Class Room 5B Official Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .hero-content {
+            text-align: center;
+            animation: slideUp 0.8s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            color: #ffd700;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 3px 3px 6px rgba(0, 0, 0, 0.5); }
+            50% { text-shadow: 0 0 30px rgba(255, 215, 0, 1), 3px 3px 6px rgba(0, 0, 0, 0.5); }
+        }
+
+        .hero p {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #87ceeb;
+        }
+
+        .hero .subtitle {
+            font-size: 1.2em;
+            color: #90ee90;
+            margin-bottom: 40px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #333;
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid #ffd700;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 60px;
+            color: #ffd700;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #ffd700;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            color: #87ceeb;
+        }
+
+        .feature-card p {
+            color: #ddd;
+            line-height: 1.6;
+        }
+
+        /* Timetable Section */
+        .timetable-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.2), rgba(42, 82, 152, 0.2));
+        }
+
+        .timetable-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timetable-preview {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .day-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .day-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .day-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .day-card p {
+            color: #87ceeb;
+            font-size: 0.95em;
+        }
+
+        /* Info Section */
+        .info-section {
+            padding: 80px 20px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .info-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #ffd700;
+            transition: all 0.3s ease;
+        }
+
+        .info-box:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        .info-box h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .info-box p {
+            color: #ddd;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+
+        .footer p {
+            color: #87ceeb;
+            margin-bottom: 10px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.3em;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #ffd700;
+            transform: scale(1.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .nav-links {
+                gap: 15px;
+                font-size: 0.9em;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .days-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+
+        /* Loading Animation */
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">📘 BCA 5-B Portal</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#timetable">Timetable</a></li>
+                <li><a href="#info">Info</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>📚 BCA 5-B Class Portal</h1>
+            <p>S K Patel Institute of Management & Computer Studies</p>
+            <p class="subtitle">🏫 Classroom: 5-B CR-304 | 📚 Semester: 5</p>
+            
+            <div class="cta-buttons">
+                <a href="./index.html" class="btn btn-primary">📅 View Live Timetable</a>
+                <a href="#features" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <h2 class="section-title">✨ Key Features</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🕐</div>
+                    <h3>Live Clock</h3>
+                    <p>Real-time clock that updates every second showing current time with hours, minutes, and seconds.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Current Lecture</h3>
+                    <p>Automatically tracks and highlights the current running lecture with green highlighting.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⏳</div>
+                    <h3>Countdown Timer</h3>
+                    <p>See exactly how much time is left in the current class with live countdown display.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3>Day-wise Schedule</h3>
+                    <p>View complete timetable for Monday to Saturday with clickable tabs for easy navigation.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🖥️</div>
+                    <h3>Lab Sessions</h3>
+                    <p>Clear distinction between theory classes and lab sessions with special highlighting.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Fully responsive design that works perfectly on phones, tablets, and desktop devices.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timetable Section -->
+    <section class="timetable-section" id="timetable">
+        <div class="timetable-container">
+            <h2 class="section-title">📖 Weekly Timetable</h2>
+            
+            <div class="timetable-preview">
+                <h3 style="color: #ffd700; text-align: center; font-size: 1.5em;">Monday to Saturday Schedule</h3>
+                
+                <div class="days-grid">
+                    <div class="day-card">
+                        <h4>📅 Monday</h4>
+                        <p>09:00 - 14:00</p>
+                        <p style="font-size: 0.85em; margin-top: 10px;">5 Classes</p>
+                    </div>
+                    <div class="day-card">
+                        <h4>📅 Tuesday</h4>
+                        <p>09:00 - 14:00</p>
+                        <p style="font-size: 0.85em; margin-top: 10px;">Lab + Classes</p>
+                    </div>
+                    <div class="day-card">
+                        <h4>📅 Wednesday</h4>
+                        <p>09:00 - 14:00</p>
+                        <p style="font-size: 0.85em; margin-top: 10px;">5 Classes</p>
+                    </div>
+                    <div class="day-card">
+                        <h4>📅 Thursday</h4>
+                        <p>09:00 - 14:00</p>
+                        <p style="font-size: 0.85em; margin-top: 10px;">Lab + Classes</p>
+                    </div>
+                    <div class="day-card">
+                        <h4>📅 Friday</h4>
+                        <p>09:00 - 13:00</p>
+                        <p style="font-size: 0.85em; margin-top: 10px;">Lab Session</p>
+                    </div>
+                    <div class="day-card">
+                        <h4>📅 Saturday</h4>
+                        <p>09:00 - 14:00</p>
+                        <p style="font-size: 0.85em; margin-top: 10px;">Lab + Classes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="./index.html" class="btn btn-primary">View Full Timetable with Live Updates</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="info-section" id="info">
+        <div class="info-container">
+            <h2 class="section-title">ℹ️ Class Information</h2>
+            
+            <div class="info-grid">
+                <div class="info-box">
+                    <h3>🏫 Location</h3>
+                    <p><strong>Institute:</strong> S K Patel Institute of Management & Computer Studies</p>
+                    <p><strong>Classroom:</strong> 5-B CR-304</p>
+                </div>
+
+                <div class="info-box">
+                    <h3>📚 Course Details</h3>
+                    <p><strong>Program:</strong> Bachelor of Computer Applications (BCA)</p>
+                    <p><strong>Semester:</strong> 5</p>
+                    <p><strong>Batch:</strong> 2024-2027</p>
+                </div>
+
+                <div class="info-box">
+                    <h3>⏰ Class Timings</h3>
+                    <p><strong>Start Time:</strong> 9:00 AM</p>
+                    <p><strong>End Time:</strong> 2:00 PM</p>
+                    <p><strong>Duration:</strong> 1 hour per class</p>
+                </div>
+
+                <div class="info-box">
+                    <h3>👨‍🏫 Subjects Offered</h3>
+                    <p>• ST (Software Testing)</p>
+                    <p>• NGD (Network & Graphics Design)</p>
+                    <p>• ERP (Enterprise Resource Planning)</p>
+                    <p>• CYS (Cybersecurity)</p>
+                    <p>• JAVA Programming</p>
+                </div>
+
+                <div class="info-box">
+                    <h3>🖥️ Lab Sessions</h3>
+                    <p><strong>Tuesday:</strong> JAVA Lab</p>
+                    <p><strong>Thursday:</strong> JAVA Lab</p>
+                    <p><strong>Friday:</strong> NGD Lab</p>
+                    <p><strong>Saturday:</strong> NGD Lab</p>
+                </div>
+
+                <div class="info-box">
+                    <h3>📞 Quick Links</h3>
+                    <p>📧 Email: classcontact@skpims.edu</p>
+                    <p>📱 Contact: Available during office hours</p>
+                    <p>🌐 Website: www.skpims.edu</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <h3>📘 BCA 5-B Class Portal</h3>
+            <p>S K Patel Institute of Management & Computer Studies</p>
+            <p>Empowering Future IT Professionals</p>
+            
+            <div class="social-links">
+                <a href="#" title="Facebook">f</a>
+                <a href="#" title="Twitter">𝕏</a>
+                <a href="#" title="Instagram">📷</a>
+                <a href="#" title="LinkedIn">💼</a>
+            </div>
+
+            <hr style="margin: 20px 0; border-color: rgba(255, 255, 255, 0.2);">
+            
+            <p style="font-size: 0.9em; color: #999;">
+                © 2024-2025 BCA 5-B Class Portal. All rights reserved.<br>
+                Last Updated: June 2026 | Powered by GitHub Pages
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .day-card, .info-box').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
